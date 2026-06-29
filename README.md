@@ -248,9 +248,9 @@ smtap-microservices/
 ## Clone Repository
 
 ```bash id="t6c17r"
-git clone https://github.com/<username>/smtap-microservices.git
+git clone https://github.com/ravimnm/secure-multi-tenant-audit-platform.git
 
-cd smtap-microservices
+cd secure-multi-tenant-audit-platform
 ```
 
 ---
