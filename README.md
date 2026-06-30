@@ -1,44 +1,118 @@
-# 🔐 SMTAP — Secure Multi-Tenant Audit Platform
+# SMTAP - Secure Multi-Tenant Audit Platform
 
-> **Cloud-native, tamper-evident audit logging and security monitoring platform for distributed enterprise systems.**
+SMTAP (Secure Multi-Tenant Audit Platform) is an audit platform designed for enterprise SaaS environments. The platform provides centralized audit logging, tamper-evident storage, security event monitoring, investigation timelines, and compliance reporting.
 
-SMTAP is an enterprise-grade security platform designed to provide **secure audit trails, tenant isolation, integrity verification, and centralized security event monitoring** across microservices environments.
+## Features
 
-Modern organizations generate millions of security-relevant events every day. Traditional logging systems can store these events, but they rarely guarantee:
+### Audit Management
+- Centralized audit log collection
+- Multi-tenant audit isolation
+- Dynamic audit log search and filtering
+- Audit log export (CSV)
+- Recent activity monitoring
 
-* Log integrity
-* Tamper detection
-* Tenant isolation
-* Compliance readiness
-* Centralized security visibility
+### Tamper Detection
+- Hash-chained audit logs
+- Integrity verification engine
+- Integrity anchor generation
+- Chain validation and tampering detection
 
-SMTAP addresses these challenges by combining **cryptographic integrity mechanisms**, **multi-tenant security controls**, and **cloud-native microservices architecture**.
+### Security Monitoring
+- Security event collection
+- Security alert management
+- Severity classification
+- User risk visualization
+- Open alert tracking
+
+### Investigation & Forensics
+- User investigation timeline
+- Tenant activity timeline
+- Device-based timeline reconstruction
+- Recent audit event tracking
+
+### Compliance Reporting
+- User activity reports
+- Admin activity reports
+- Data access reports
+- Integrity verification reports
+
+### Dashboard Analytics
+- Audit KPIs
+- Monthly audit trends
+- Severity distribution charts
+- Recent activity widgets
+- Risk score visualization
 
 ---
 
-# ✨ Key Features
+# Architecture
 
-## 🔒 Secure Multi-Tenant Architecture
+The platform follows a microservices architecture.
 
-* Strong logical isolation between tenants
-* Tenant-aware request processing
-* Cross-tenant data access prevention
-* JWT-based tenant context propagation
+```text
+                +----------------+
+                |    Frontend    |
+                | Angular 20     |
+                +--------+-------+
+                         |
+                         v
+                +----------------+
+                |  API Gateway   |
+                | Spring Cloud   |
+                +--------+-------+
+                         |
+         ---------------------------------
+         |                               |
+         v                               v
++----------------+           +----------------------+
+| Auth Service   |           | Audit Service        |
+| JWT / RBAC     |           | Audit Logs           |
++----------------+           | Timeline Engine      |
+                             | Integrity Engine     |
+                             +----------+-----------+
+                                        |
+                                        v
+                             +----------------------+
+                             | Security Service     |
+                             | Alerts & Events      |
+                             +----------------------+
+```
 
 ---
 
-## 🛡 Tamper-Evident Audit Logging
+# Tech Stack
 
-Each audit event is protected using:
+## Backend
 
-* SHA-256 cryptographic hashing
-* Hash chaining
-* Previous-hash linkage
-* Integrity anchors
+- Java 21
+- Spring Boot 3
+- Spring Security
+- Spring Data JPA
+- PostgreSQL
+- JWT Authentication
+- Maven
 
-Any unauthorized modification invalidates the entire chain.
+## Frontend
 
-```text id="8wzbcb"
+- Angular 20
+- TypeScript
+- Bootstrap 5
+- Chart.js
+- ng2-charts
+
+## Database
+
+- PostgreSQL
+
+---
+
+# Security Features
+
+## Tamper-Evident Audit Logs
+
+Each audit event is cryptographically linked to the previous event.
+
+```text
 GENESIS
    ↓
 Log1 → Hash1
@@ -48,340 +122,141 @@ Log2 → Hash2
 Log3 → Hash3
 ```
 
----
+Any modification breaks the chain and is detected during integrity verification.
 
-## 📊 Centralized Security Monitoring
+## Multi-Tenant Isolation
 
-SMTAP aggregates security events from multiple services and presents them through a unified dashboard.
+Audit and security data are logically isolated using tenant identifiers.
 
-Examples:
+## Integrity Anchor
 
-* Authentication events
-* Privilege escalations
-* Runtime attacks
-* Suspicious activities
-* Security alerts
+The latest audit hash is persisted as an integrity anchor for detecting chain rewrite attacks.
 
 ---
 
-## 📈 Enterprise Dashboard
+# Modules
 
-Interactive Angular dashboard provides:
+## Audit Service
 
-* Audit metrics
-* Security statistics
-* Integrity score visualization
-* Event trends
-* Audit history
+Responsible for:
 
----
+- Audit log ingestion
+- Log querying
+- Integrity verification
+- CSV export
+- Timeline generation
+- Compliance reporting
 
-## 📑 Compliance Readiness
+## Security Service
 
-Export audit evidence for:
+Responsible for:
 
-* ISO 27001
-* SOC 2
-* HIPAA
-* PCI-DSS
-* Internal audits
-
-Supported export formats:
-
-* CSV
-* JSON (planned)
+- Security event ingestion
+- Alert generation
+- Alert management
+- Severity analysis
 
 ---
 
-# 🏗 System Architecture
+# REST APIs
 
-```text id="ihy28d"
-                     +--------------------+
-                     |     Frontend       |
-                     |      Angular       |
-                     +---------+----------+
-                               |
-                               v
-                 +-------------------------+
-                 |      API Gateway        |
-                 | JWT Validation Routing  |
-                 +-----------+-------------+
-                             |
-         +-------------------+-------------------+
-         |                   |                   |
-         v                   v                   v
+## Audit APIs
 
-+----------------+  +----------------+  +----------------+
-| Auth Service   |  | Audit Service  |  | Security Svc  |
-|----------------|  |----------------|  |----------------|
-| Authentication |  | Audit Logging  |  | Event Mgmt    |
-| User Mgmt      |  | Hash Chaining  |  | Alert Storage |
-| Tenant Mgmt    |  | Verification   |  | Detection     |
-+----------------+  +----------------+  +----------------+
+| Method | Endpoint | Description |
+|---------|-----------|-------------|
+| POST | `/audit/events` | Create audit event |
+| GET | `/audit/events` | Get audit logs |
+| GET | `/audit/events/verify` | Verify integrity |
+| GET | `/audit/events/export` | Export logs |
+| GET | `/audit/events/recent` | Recent events |
 
-         |                   |                   |
-         +---------------------------------------+
-                             |
-                             v
+## Timeline APIs
 
-                  +-------------------+
-                  |   PostgreSQL DB   |
-                  +-------------------+
-```
+| Method | Endpoint |
+|---------|-----------|
+| GET | `/audit/timeline/user/{userId}` |
+| GET | `/audit/timeline/tenant/{tenantId}` |
+| GET | `/audit/timeline/device/{deviceId}` |
+
+## Security APIs
+
+| Method | Endpoint |
+|---------|-----------|
+| POST | `/security/events` |
+| GET | `/security/events` |
+| GET | `/security/events/verify` |
 
 ---
 
-# 🚀 Technology Stack
+# UI Preview
+
+## Dashboard
+
+- KPI cards
+- Audit statistics
+- Security metrics
+- Investigation timeline
+- Severity distribution
+- Recent audit events
+
+## Audit Logs
+
+- Search by actor
+- Search by action
+- Compliance reports
+- Audit history table
+
+## Security Events
+
+- Security alerts
+- Risk score visualization
+- Security event table
+
+---
+
+# Future Enhancements
+
+- Redis caching
+- Kafka-based event streaming
+- Elasticsearch integration
+- SIEM integration
+- Real-time notifications
+- Rule engine
+- Docker deployment
+- Kubernetes deployment
+- Role-based dashboards
+- Threat intelligence integration
+
+---
+
+# Running the Project
 
 ## Backend
 
-| Technology           | Purpose                        |
-| -------------------- | ------------------------------ |
-| Java 21              | Core development               |
-| Spring Boot          | Microservices framework        |
-| Spring Security      | Authentication & authorization |
-| Spring Cloud Gateway | API Gateway                    |
-| Spring Data JPA      | Persistence layer              |
-| JWT                  | Stateless authentication       |
-| PostgreSQL           | Data storage                   |
-
----
-
-## Frontend
-
-| Technology | Purpose            |
-| ---------- | ------------------ |
-| Angular    | UI framework       |
-| TypeScript | Frontend language  |
-| Bootstrap  | Responsive UI      |
-| Chart.js   | Data visualization |
-| ng2-charts | Dashboard charts   |
-
----
-
-## DevOps
-
-| Technology | Purpose          |
-| ---------- | ---------------- |
-| Docker     | Containerization |
-| Kubernetes | Orchestration    |
-| Maven      | Build management |
-
----
-
-# 🔐 Security Model
-
-SMTAP enforces security at multiple layers.
-
-## Authentication
-
-Users authenticate through Auth Service and receive JWT access tokens.
-
-## Authorization
-
-Role-based access:
-
-```text id="qqxst9"
-ROLE_SUPER_ADMIN
-ROLE_ADMIN
-ROLE_AUDITOR
-ROLE_USER
-```
-
-## Tenant Isolation
-
-Every request carries tenant context.
-
-```text id="aqgfcr"
-Tenant A → Only Tenant A Data
-
-Tenant B → Only Tenant B Data
-```
-
-Cross-tenant access is prohibited.
-
----
-
-# 🧩 Microservices
-
-| Service          | Port | Responsibilities               |
-| ---------------- | ---- | ------------------------------ |
-| API Gateway      | 8080 | Routing, JWT validation        |
-| Auth Service     | 8082 | Authentication, users, tenants |
-| Audit Service    | 8081 | Audit management & integrity   |
-| Security Service | 8083 | Security event storage         |
-
----
-
-# 📂 Project Structure
-
-```text id="xwupzy"
-smtap-microservices/
-
-├── api-gateway/
-├── auth-service/
-├── audit-service/
-├── security-service/
-├── frontend/
-
-├── kubernetes/
-├── docker-compose.yml
-
-└── README.md
-```
-
----
-
-# ⚙ Getting Started
-
-## Prerequisites
-
-* Java 21+
-* Maven 3.9+
-* Node.js 20+
-* PostgreSQL
-* Docker Desktop
-* Kubernetes (Minikube/Kind)
-
----
-
-## Clone Repository
-
-```bash id="t6c17r"
-git clone https://github.com/ravimnm/secure-multi-tenant-audit-platform.git
-
-cd secure-multi-tenant-audit-platform
-```
-
----
-
-# 🗄 Database Setup
-
-Create databases:
-
-```sql id="1crxaj"
-CREATE DATABASE auth_db;
-CREATE DATABASE audit_db;
-CREATE DATABASE security_db;
-```
-
-Update `application.properties` accordingly.
-
----
-
-# 🔨 Build Services
-
-```bash id="ceom47"
-mvn clean package
-```
-
-Execute inside each microservice directory.
-
----
-
-# ▶ Run Services
-
-Start in the following order:
-
-```text id="wfhuwz"
-1. Auth Service
-2. Audit Service
-3. Security Service
-4. API Gateway
-5. Frontend
-```
-
-Backend:
-
-
-```bash id="8e2n3o"
+```bash
+mvn clean install
 mvn spring-boot:run
 ```
 
-Frontend:
+## Frontend
 
-```bash id="5m7w4f"
-cd frontend
-
+```bash
 npm install
-
 ng serve
 ```
 
-Frontend URL:
+Frontend runs at:
 
-```text id="5vn05e"
+```text
 http://localhost:4200
 ```
 
 ---
 
-# 📡 Core APIs
-
-## Authentication
-
-```http id="crd80e"
-GET /auth/token
-POST /auth/users
-POST /auth/tenants
-```
-
-## Audit
-
-```http id="v63l5g"
-POST /audit/events
-GET /audit/events
-GET /audit/events/verify
-GET /audit/events/export
-```
-
-## Security
-
-```http id="m79t5n"
-POST /security/events
-GET /security/events
-```
-
----
-
-# 📸 Screenshots
-
-Add screenshots here.
-
-## Home Page
-
-![Home](docs/images/home.png)
-
-## Dashboard
-
-![Dashboard](docs/images/dashboard.png)
-
-## Audit Logs
-
-![Audit Logs](docs/images/audit.png)
-
-
----
-
-# 🎯 Use Cases
-
-* Enterprise audit logging
-* Compliance evidence generation
-* SaaS multi-tenant applications
-* Security monitoring
-* Digital forensics support
-* Incident response investigations
-
----
-
-# 👨‍💻 Author
+# Author
 
 **Ravi Sankar Manem**
 
-GitHub: https://github.com/ravimnm
+- 💻 GitHub: https://github.com/ravimnm
 
 ---
-
-# 📄 License
-
-Licensed under the MIT License.
