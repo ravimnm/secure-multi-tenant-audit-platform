@@ -1,6 +1,7 @@
 package com.ivar.audit.modules.controller;
 
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -20,6 +21,8 @@ import com.ivar.audit.modules.dto.AuditLogQueryRequest;
 import com.ivar.audit.modules.dto.AuditLogRequest;
 import com.ivar.audit.modules.dto.AuditLogResponse;
 import com.ivar.audit.modules.dto.AuditVerificationResponse;
+import com.ivar.audit.modules.entity.AuditLog;
+import com.ivar.audit.modules.repository.AuditLogRepository;
 import com.ivar.audit.modules.service.AuditLogService;
 
 import jakarta.validation.Valid;
@@ -28,8 +31,10 @@ import jakarta.validation.Valid;
 @RequestMapping("/audit/events")
 public class AuditLogController {
 	private final AuditLogService auditLogService;
-	public AuditLogController(AuditLogService auditLogService) {
+	private final AuditLogRepository auditLogRepository;
+	public AuditLogController(AuditLogService auditLogService, AuditLogRepository auditLogRepository) {
 		this.auditLogService=auditLogService;
+		this.auditLogRepository=auditLogRepository;
 	}
 	
 	@PostMapping
@@ -68,6 +73,22 @@ public class AuditLogController {
         return ResponseEntity.ok()
                 .header("Content-Disposition", "attachment; filename=audit_logs.csv")
                 .body(csv);
+    }
+    @PostMapping("/ingest")
+    public ApiResponse<AuditLogResponse> ingest(
+            @RequestBody AuditLogRequest req) {
+
+        return new ApiResponse<>(
+                auditLogService.createAuditLog(req));
+    }
+    @GetMapping("/recent")
+    public List<AuditLog> getRecentLogs() {
+
+        Instant cutoff =
+                Instant.now().minus(10, ChronoUnit.MINUTES);
+
+        return auditLogRepository
+                .findByTimestampAfter(cutoff);
     }
 
 }

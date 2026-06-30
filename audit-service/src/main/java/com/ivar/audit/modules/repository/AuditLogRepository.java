@@ -1,5 +1,6 @@
 package com.ivar.audit.modules.repository;
 
+import java.time.Instant;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,4 +13,25 @@ public interface AuditLogRepository extends JpaRepository<AuditLog, Long>,JpaSpe
 	List<AuditLog> findByTenantId(String tenantId);
 	AuditLog findTopByTenantIdOrderByTimestampDesc(String tenantId);
 	List<AuditLog> findByTenantIdOrderByTimestampAsc(String tenantId);
+	List<AuditLog> findByDeviceIdOrderByTimestampAsc(
+            String deviceId);
+	List<AuditLog> findByActorIdOrderByTimestampAsc(String userId);
+
+    List<AuditLog> findByTimestampBetweenOrderByTimestampAsc(
+            Instant start,
+            Instant end
+    );
+	List<AuditLog> findByTimestampAfter(Instant cutoff);
+	List<AuditLog>
+	findByActorId(String actorId);
+
+	List<AuditLog>
+	findByActorRoleIn(
+	        List<String> roles);
+
+	List<AuditLog>
+	findByActionIn(
+	        List<String> actions);
+	long deleteByTenantIdAndTimestampBefore(String tenantId, Instant cutoff);
+	List<AuditLog> findByTenantIdAndTimestampBefore(String tenantId, Instant cutoff);
 }

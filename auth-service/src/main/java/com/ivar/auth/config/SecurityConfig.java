@@ -38,7 +38,8 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/auth/login",
                                 "/auth/users",
-                                "/auth/tenants/**"
+                                "/auth/tenants/**",
+                                "/auth/validate-api-key"
                         ).permitAll()
 
                         // Everything else secured

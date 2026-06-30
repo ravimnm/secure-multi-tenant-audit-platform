@@ -138,17 +138,31 @@ public class AuditLogService {
 //            tenantId = "default-tenant";
 //        }
 
+    	String role = UserContext.getRole();
     	String tenantId = TenantContext.getTenant();
 
-    	if (tenantId == null) {
-    	    throw new RuntimeException("Tenant not found");
+    	Specification<AuditLog> spec;
+
+    	if ("ROLE_SUPER_ADMIN".equals(role)) {
+
+    	    // no tenant restriction
+    	    spec = Specification
+    	            .where(AuditLogSpecification.byActor(actorId))
+    	            .and(AuditLogSpecification.byAction(action))
+    	            .and(AuditLogSpecification.byDateRange(from, to));
+
+    	} else {
+
+    	    if (tenantId == null) {
+    	        throw new RuntimeException("Tenant not found");
+    	    }
+
+    	    spec = Specification
+    	            .where(AuditLogSpecification.byTenant(tenantId))
+    	            .and(AuditLogSpecification.byActor(actorId))
+    	            .and(AuditLogSpecification.byAction(action))
+    	            .and(AuditLogSpecification.byDateRange(from, to));
     	}
-    	
-        Specification<AuditLog> spec = Specification
-                .where(AuditLogSpecification.byTenant(tenantId))
-                .and(AuditLogSpecification.byActor(actorId))
-                .and(AuditLogSpecification.byAction(action))
-                .and(AuditLogSpecification.byDateRange(from, to));
 
         Sort sort =
                 direction.equalsIgnoreCase("asc")

@@ -2,9 +2,14 @@ package com.ivar.auth.modules.service;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 
+import com.ivar.auth.modules.dto.ApiKeyResponse;
+import com.ivar.auth.modules.dto.ApiKeyValidationResponse;
 import com.ivar.auth.modules.dto.CreateUserRequest;
 import com.ivar.auth.modules.dto.LoginRequest;
 import com.ivar.auth.modules.dto.UserResponse;
@@ -96,5 +101,33 @@ public class AuthService {
                 user.getUsername(),
                 user.getRole(),
                 user.getTenant().getTenantId());
+    }
+
+    @GetMapping("/validate-api-key")
+    public ResponseEntity<ApiKeyResponse>
+    validateApiKey(
+
+            @RequestHeader("X-API-KEY")
+            String apiKey) {
+
+        Tenant tenant =
+                tenantRepository
+                    .findByApiKey(apiKey)
+                    .orElse(null);
+
+        if (tenant == null) {
+
+            return ResponseEntity
+                    .status(401)
+                    .build();
+        }
+
+        return ResponseEntity.ok(
+
+                new ApiKeyResponse(
+                        tenant.getTenantId(),
+                        tenant.isActive()
+                )
+        );
     }
 }
