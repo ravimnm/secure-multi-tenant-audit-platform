@@ -1,0 +1,161 @@
+<app-navbar></app-navbar>
+
+<div class="d-flex">
+
+    <app-sidebar></app-sidebar>
+
+    <div class="page-content">
+        
+
+        <h2>Audit Logs</h2>
+
+        <div class="chart-card">
+
+            <h4>Compliance Status</h4>
+
+            <table class="audit-table">
+
+                <thead>
+
+                <tr>
+
+                    <th>Report</th>
+                    <th>Status</th>
+
+                </tr>
+
+                </thead>
+
+                <tbody>
+
+                <tr>
+
+                    <td>User Activity Report</td>
+                    <td>Generated</td>
+
+                </tr>
+
+                <tr>
+
+                    <td>Integrity Verification</td>
+                    <td>Passed</td>
+
+                </tr>
+
+                <tr>
+
+                    <td>Data Access Report</td>
+                    <td>Generated</td>
+
+                </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+        <div class="row mb-3">
+
+            <div class="col-md-4">
+
+                <input
+                    class="form-control"
+                    placeholder="Search by Actor"
+                    [(ngModel)]="actor">
+
+            </div>
+
+            <div class="col-md-4">
+
+                <input
+                    class="form-control"
+                    placeholder="Search by Action"
+                    [(ngModel)]="action">
+
+            </div>
+
+            <div class="col-md-2">
+
+                <button
+                    class="btn btn-primary w-100"
+                    (click)="searchLogs()">
+
+                    Search
+
+                </button>
+
+            </div>
+
+            <div class="col-md-2">
+
+                <button
+                    class="btn btn-secondary w-100"
+                    (click)="clearSearch()">
+
+                    Clear
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <p>
+            Showing {{ filteredLogs.length }}
+            of {{ logs.length }} logs
+        </p>
+
+        <table class="table table-bordered table-striped">
+
+            <thead class="table-dark">
+
+            <tr>
+
+                <th>ID</th>
+                <th>Actor</th>
+                <th>Action</th>
+                <th>Timestamp</th>
+
+            </tr>
+
+            </thead>
+
+            <tbody>
+
+                @for (log of filteredLogs; track log.id) {
+
+                <tr>
+
+                    <td>{{ log.id }}</td>
+
+                    <td>{{ log.actorId }}</td>
+
+                    <td>{{ log.action }}</td>
+
+                    <td>{{ log.timestamp }}</td>
+
+                </tr>
+
+                }
+
+                @if(filteredLogs.length === 0){
+
+                <tr>
+
+                    <td colspan="4" class="text-center">
+
+                        No logs found
+
+                    </td>
+
+                </tr>
+
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>

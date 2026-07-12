@@ -1,0 +1,339 @@
+<app-navbar></app-navbar>
+
+<div class="dashboard-layout">
+
+    <app-sidebar></app-sidebar>
+
+    <div class="dashboard-content">
+
+        <!-- HEADER -->
+
+        <div class="header-section">
+
+            <div>
+                <h1>Audit Management Dashboard</h1>
+                <p class="subtitle">
+                    Monitor audit activity, security events and system integrity.
+                </p>
+            </div>
+
+            <div class="filter-bar">
+
+                <button
+                        [class.active]="selectedRange === 'today'"
+                        (click)="changeRange('today')">
+
+                    Today
+
+                </button>
+
+                <button
+                        [class.active]="selectedRange === '7days'"
+                        (click)="changeRange('7days')">
+
+                    Last 7 Days
+
+                </button>
+
+                <button
+                        [class.active]="selectedRange === '30days'"
+                        (click)="changeRange('30days')">
+
+                    Last 30 Days
+
+                </button>
+
+                <button
+                        [class.active]="selectedRange === 'all'"
+                        (click)="changeRange('all')">
+
+                    All
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- KPI CARDS -->
+
+        <div class="kpi-grid">
+
+            <div class="kpi-card">
+
+                <h5>Total Audit Logs</h5>
+
+                <h2>{{ totalLogs }}</h2>
+
+                <p class="trend positive">
+
+                    ↑ {{ logTrend }} from previous period
+
+                </p>
+
+            </div>
+
+
+            <div class="kpi-card">
+
+                <h5>Security Events</h5>
+
+                <h2>{{ securityEvents }}</h2>
+
+                <p class="trend negative">
+
+                    ↓ {{ securityTrend }} from previous period
+
+                </p>
+
+            </div>
+
+
+            <div class="kpi-card">
+
+                <h5>Integrity Score</h5>
+
+                <h2>{{ verified }}%</h2>
+
+                <p class="trend positive">
+
+                    ↑ {{ integrityTrend }}
+
+                </p>
+
+            </div>
+            <div class="kpi-card">
+
+                <h5>Open Alerts</h5>
+
+                <h2>{{ openAlerts }}</h2>
+
+                <p class="trend negative">
+
+                    {{ criticalAlerts }} Critical
+
+                </p>
+
+            </div>
+
+            <div class="kpi-card">
+
+                <h5>High Risk Users</h5>
+
+                <h2>{{ highRiskUsers }}</h2>
+
+                <p class="trend negative">
+
+                    Requires investigation
+
+                </p>
+
+            </div>
+
+            <div class="kpi-card">
+
+                <h5>Active Tenants</h5>
+
+                <h2>{{ activeTenants }}</h2>
+
+                <p class="trend positive">
+
+                    Monitored organizations
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- CHARTS -->
+
+        <div class="chart-grid">
+
+            <div class="chart-card">
+
+                <h4>Audit Status</h4>
+
+                <div class="chart-container">
+
+                    <canvas
+                            baseChart
+                            [data]="doughnutData"
+                            [type]="'doughnut'">
+
+                    </canvas>
+
+                </div>
+
+            </div>
+
+
+            <div class="chart-card">
+
+                <h4>Monthly Audit Logs</h4>
+
+                <div class="chart-container">
+
+                    <canvas
+                            baseChart
+                            [data]="monthlyChart"
+                            [type]="'bar'">
+
+                    </canvas>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- <div class="chart-card">
+
+            <h4>Investigation Timeline</h4>
+
+            <div class="timeline">
+
+                <div
+                        class="timeline-item"
+                        *ngFor="let event of timelineEvents">
+
+                    <div class="timeline-dot"></div>
+
+                    <div class="timeline-content">
+
+                        <h5>
+
+                            {{event.action}}
+
+                        </h5>
+
+                        <p>
+
+                            {{event.actorId}}
+                            •
+                            {{event.tenantId}}
+
+                        </p>
+
+                        <small>
+
+                            {{event.timestamp}}
+
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div> -->
+
+        <!-- TIMELINE CARD -->
+
+        <div class="chart-card timeline-widget">
+
+            <h4>Investigation Timeline</h4>
+
+            <div class="timeline-container">
+
+                <div
+                    class="timeline-item"
+                    *ngFor="let event of timelineEvents">
+
+                    <div class="timeline-dot"></div>
+
+                    <div class="timeline-card">
+
+                        <h5>{{event.action}}</h5>
+
+                        <p>
+                            <strong>User:</strong>
+                            {{event.actorId}}
+                        </p>
+
+                        <p>
+                            <strong>Tenant:</strong>
+                            {{event.tenantId}}
+                        </p>
+
+                        <small>
+                            {{event.timestamp | date:'dd MMM yyyy, hh:mm a'}}
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+        <!-- SECOND ROW -->
+
+        <div class="chart-grid">
+
+            <div class="chart-card">
+
+                <h4>Security Severity Distribution</h4>
+
+                <div class="chart-container">
+
+                    <canvas
+                            baseChart
+                            [data]="severityChart"
+                            [type]="'pie'">
+
+                    </canvas>
+
+                </div>
+
+            </div>
+
+
+            <div class="chart-card">
+
+                <h4>Recent Audit Events</h4>
+
+                <table class="audit-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>ID</th>
+                            <th>Actor</th>
+                            <th>Action</th>
+
+                        </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                        <tr *ngFor="let audit of recentAudits">
+
+                            <td>{{audit.id}}</td>
+
+                            <td>{{audit.actorId}}</td>
+
+                            <td>
+                                <span class="action-badge">
+                                    {{audit.action}}
+                                </span>
+                            </td>
+
+                        </tr>
+
+                        </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,42 @@
+<div class="container mt-5">
+
+    <div class="card mx-auto p-4"
+         style="max-width:400px">
+
+        <h2 class="text-center mb-4">
+            SMTAP Login
+        </h2>
+
+        <div class="mb-3">
+            <label>User ID</label>
+
+            <input
+                #userId
+                class="form-control">
+        </div>
+
+        <div class="mb-3">
+
+            <label>Password</label>
+
+            <input
+                #password
+                value="password"
+                class="form-control">
+        </div>
+
+        <button
+            class="btn btn-primary w-100"
+
+            (click)="login(
+                userId.value,
+                password.value
+            )">
+
+            Login
+
+        </button>
+
+    </div>
+
+</div>

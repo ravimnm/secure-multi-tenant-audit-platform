@@ -1,0 +1,151 @@
+/* You can add global styles to this file, and also import other style files */
+body {
+
+    background-color: #f5f5f5;
+    color: black;
+
+    transition: all .3s ease;
+}
+
+body.dark-theme {
+
+    background-color: #121212;
+    color: white;
+}
+
+body.dark-theme .card {
+
+    background-color: #1e1e1e;
+    color: white;
+}
+
+body.dark-theme table {
+
+    color: white;
+}
+
+body.dark-theme .navbar {
+
+    background-color: #000 !important;
+}
+/* ---------- DARK THEME ---------- */
+
+body.dark-theme {
+
+    background: #121212;
+    color: #e5e7eb;
+}
+
+/* Main page containers */
+
+body.dark-theme .dashboard-content,
+body.dark-theme .container {
+
+    background: #121212;
+    color: white;
+}
+
+/* Cards */
+
+body.dark-theme .kpi-card,
+body.dark-theme .chart-card,
+body.dark-theme .timeline-card {
+
+    background: #1e1e1e;
+    color: white;
+
+    box-shadow:
+        0 2px 10px rgba(0,0,0,.4);
+}
+
+/* Tables */
+
+body.dark-theme table {
+
+    color: white;
+}
+
+body.dark-theme .table {
+
+    background: #1e1e1e;
+}
+
+body.dark-theme .table td,
+body.dark-theme .table th {
+
+    background: #1e1e1e;
+    color: white;
+
+    border-color: #333;
+}
+
+body.dark-theme .table-dark th {
+
+    background: #111827 !important;
+}
+
+/* Inputs */
+
+body.dark-theme input {
+
+    background: #2a2a2a;
+    color: white;
+
+    border: 1px solid #444;
+}
+
+body.dark-theme input::placeholder {
+
+    color: #aaa;
+}
+
+/* Compliance table */
+
+body.dark-theme .audit-table th {
+
+    background: #111827;
+}
+
+body.dark-theme .audit-table td {
+
+    background: #1e1e1e;
+}
+
+/* Timeline */
+
+body.dark-theme .timeline-content {
+
+    background: #1f2937;
+    color: white;
+}
+
+/* Navbar */
+
+body.dark-theme .navbar {
+
+    background: #000 !important;
+}
+
+/* Sidebar */
+
+body.dark-theme .sidebar {
+
+    background: #111827;
+}
+
+body.dark-theme .sidebar a {
+
+    color: white;
+}
+
+/* Header */
+
+body.dark-theme .subtitle {
+
+    color: #9ca3af;
+}
+
+:root {
+    --navbar-height: 60px;
+    --sidebar-width: 250px;
+}

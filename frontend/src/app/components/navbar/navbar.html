@@ -1,0 +1,28 @@
+<nav class="navbar navbar-dark bg-dark px-4">
+
+    <a class="navbar-brand fw-bold"
+       routerLink="/dashboard">
+        SMTAP
+    </a>
+
+    <div class="d-flex align-items-center gap-3">
+
+        <button
+            class="theme-btn"
+            (click)="toggleTheme()">
+
+            {{ darkMode ? '☀️' : '🌙' }}
+
+        </button>
+
+        <button
+            class="btn btn-outline-light"
+            (click)="logout()">
+
+            Logout
+
+        </button>
+
+    </div>
+
+</nav>

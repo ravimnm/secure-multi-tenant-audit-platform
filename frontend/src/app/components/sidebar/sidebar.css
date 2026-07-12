@@ -1,0 +1,55 @@
+.sidebar {
+
+    position: fixed;
+
+    top: 60px; /* navbar height */
+
+    left: 0;
+
+    width: 250px;
+
+    height: calc(100vh - 60px);
+
+    background-color: #212529;
+
+    overflow-y: auto;
+
+    padding-top: 20px;
+
+    z-index: 999;
+}
+
+.sidebar a {
+
+    display: block;
+
+    color: white;
+
+    text-decoration: none;
+
+    padding: 15px 20px;
+
+    transition: 0.3s;
+}
+
+.sidebar a:hover,
+.sidebar a.active {
+
+    background-color: #495057;
+}
+
+@media (max-width: 992px) {
+
+    .sidebar {
+
+        width: 200px;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .sidebar {
+
+        display: none;
+    }
+}

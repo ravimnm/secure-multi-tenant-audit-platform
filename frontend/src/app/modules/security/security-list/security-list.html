@@ -1,0 +1,123 @@
+<app-navbar></app-navbar>
+
+<div class="d-flex">
+
+    <app-sidebar></app-sidebar>
+
+    <div class="page-content">
+
+        <h2>Security Events</h2>
+
+        <div class="chart-card">
+
+            <h4>Latest Security Alerts</h4>
+
+            <div
+                    class="alert-row"
+                    *ngFor="let alert of alerts">
+
+                <span
+                        class="severity"
+                        [ngClass]="alert.severity.toLowerCase()">
+
+                    {{alert.severity}}
+
+                </span>
+
+                <div>
+
+                    <strong>
+
+                        {{alert.alertType}}
+
+                    </strong>
+
+                    <p>
+
+                        {{alert.description}}
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+        <div class="chart-card">
+
+            <h4>User Risk Scores</h4>
+
+            <div class="chart-container">
+
+                <canvas
+                        baseChart
+                        [data]="riskChart"
+                        [type]="'radar'">
+
+                </canvas>
+
+            </div>
+
+        </div>
+
+        <table
+            class="table table-bordered">
+
+            <thead>
+
+                <tr>
+
+                    <th>ID</th>
+                    <th>Type</th>
+                    <th>Severity</th>
+                    <th>Source</th>
+                    <th>Description</th>
+                    <th>Timestamp</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr
+                 *ngFor="let e of events">
+
+                    <td>{{e.id}}</td>
+
+                    <td>
+                        {{e.eventType}}
+                    </td>
+
+                    <td>
+
+                        <span
+                         [class]="severityClass(
+                            e.severity
+                         )">
+
+                            {{e.severity}}
+
+                        </span>
+
+                    </td>
+
+                    <td>{{e.source}}</td>
+
+                    <td>
+                        {{e.description}}
+                    </td>
+
+                    <td>
+                        {{e.timestamp}}
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
