@@ -33,7 +33,8 @@ services:
   #############################################
 
   auth-service:
-
+    build:
+      context: ./auth-service
     image: smtap-auth-service
 
     container_name: auth-service
@@ -62,7 +63,8 @@ services:
   #############################################
 
   audit-service:
-
+    build:
+      context: ./audit-service
     image: smtap-audit-service
 
     container_name: audit-service
@@ -91,7 +93,8 @@ services:
   #############################################
 
   security-service:
-
+    build:
+      context: ./security-service
     image: smtap-security-service
 
     container_name: security-service
@@ -121,7 +124,8 @@ services:
   #############################################
 
   api-gateway:
-
+    build:
+      context: ./api-gateway
     image: smtap-api-gateway
 
     container_name: api-gateway
@@ -154,7 +158,8 @@ services:
   #############################################
 
   agent-service:
-
+    build:
+      context: ./agent-service
     image: smtap-agent-service
 
     container_name: agent-service
@@ -185,7 +190,8 @@ services:
   #############################################
 
   frontend:
-
+    build:
+      context: ./frontend
     image: smtap-frontend
 
     container_name: frontend
