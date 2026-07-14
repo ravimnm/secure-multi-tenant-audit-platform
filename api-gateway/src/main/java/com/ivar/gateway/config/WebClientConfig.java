@@ -7,11 +7,14 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Configuration
 public class WebClientConfig {
 
+    @value("${auth.service.url}")
+    private String authServiceUrl;
+    
     @Bean
     public WebClient webClient() {
 
         return WebClient.builder()
-                .baseUrl("http://localhost:8082")
+                .baseUrl(authServiceUrl)
                 .build();
     }
 }
