@@ -1,5 +1,5 @@
 export const environment = {
   production:false,
 
-  apiGatewayUrl: 'http://localhost:8080'
+  apiGatewayUrl: 'http://63.179.96.206:8080'
 };
